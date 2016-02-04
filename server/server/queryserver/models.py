@@ -8,6 +8,14 @@ from jsonfield import JSONField
 class Session(models.Model):
     socid = models.IntegerField()
 
+class Soc(models.Model):
+    url = models.CharField(max_length=256)
+
+class Video(models.Model):
+    socid = models.IntegerField()
+    name = models.CharField(max_length=256)
+    url = models.CharField(max_length=256)
+
 class Query(models.Model):
     answer = models.BooleanField(default=False)
     comment = models.TextField()
@@ -20,4 +28,9 @@ class Object(models.Model):
 
 class Box(models.Model):
     objectid = models.IntegerField()
-    boxinfo = JSONField()
+    videoid = models.IntegerField()
+    time = models.IntegerField()
+    x = models.IntegerField()
+    y = models.IntegerField()
+    xlen = models.IntegerField()
+    ylen = models.IntegerField()

@@ -1,10 +1,20 @@
 from rest_framework import serializers
-from queryserver.models import Session, Query, Object, Box
+from queryserver.models import Session, Soc, Video, Query, Object, Box
 
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
 	model = Session
 	fields = ('id', 'socid')
+
+class SocSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Soc
+        fields = ('id', 'url')
+
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ('id', 'socid', 'name', 'url')
 
 class QuerySerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +29,4 @@ class ObjectSerializer(serializers.ModelSerializer):
 class BoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = Box
-        fields = ('id', 'objectid', 'boxinfo')
+        fields = ('id', 'objectid', 'videoid','time', 'x','y','xlen','ylen')
