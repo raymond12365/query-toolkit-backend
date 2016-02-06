@@ -218,7 +218,7 @@ def box_detail(request, pk):
         box.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_predicates_with_queryid(request, queryid):
     """
     Update predicates in a query with query id
@@ -232,7 +232,7 @@ def update_predicates_with_queryid(request, queryid):
     serializer = QuerySerializer(query)
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_answer_with_queryid(request, queryid):
     """
     Update the answer of a query with query id
@@ -246,7 +246,7 @@ def update_answer_with_queryid(request, queryid):
     serializer = QuerySerializer(query)
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_comment_with_queryid(request, queryid):
     """
     Update comment in a query with query id
@@ -288,17 +288,31 @@ def videos_with_socid(request, socid):
         serializer = VideoSerializer(videos, many=True)
         return Response(serializer.data)
 
-@api_view(['POST'])
-def update_boxinfo_with_boxid(request, boxid):
+
+@api_view(['GET'])
+def objects_with_sessionid(request, sessionid):
     """
-    Update boxinfo in a box with box id
+    Retrieve objects with seesion id.
     """
     try:
-        box = Box.objects.get(id=boxid)
-    except Query.DoesNotExist:
+        objects = Object.objects.filter(sessionid=sessionid)
+    except Object.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    box.boxinfo = request.data.get("boxinfo")
-    box.save()
-    serializer = BoxSerializer(box)
-    return Response(serializer.data)
 
+    if request.method == 'GET':
+        serializer = ObjectSerializer(objects, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def boxes_with_sessionid(request, sessionid):
+    """
+    Retrieve boxes with seesion id.
+    """
+    try:
+        boxes = Box.objects.filter(objectid__sessionid__exact=sessionid)
+    except Box.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = BoxSerializer(boxes, many=True)
+        return Response(serializer.data)
